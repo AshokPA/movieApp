@@ -8,41 +8,23 @@ import './App.css';
 function App() {
     const [title, setTitle] = useState("Movie App");
     const [toggleView, setToggleView] = useState(false);
-    const [movieList, setMovieList] = useState([
-        {
-            id: 'qwertyu',
-            name: "Minnal murali",
-            year: 2021,
-            actor: 'Tovino',
-            rating: 4.5,
-            languages: ['malayalam'],
-            description: "Malayalam movie",
-            certificate: true,
-        },
-        {
-            id: 'asdfghjk',
-            name: "Malik",
-            year: 2015,
-            actor: 'Fahad',
-            rating: 4.0,
-            languages: ['malayalam', 'hindi'],
-            description: "Malayalam + Hindi movie",
-            certificate: false,
-        },
-        {
-            id: 'zxcvbnmb',
-            name: "kuruthi",
-            year: 2021,
-            actor: 'PrithviRaj',
-            rating: 4.3,
-            languages: ['malayalam', "english", "thamil"],
-            description: "Malayalam  engish tamil movie",
-            certificate: false,
-        }
-    ]);
+    const [movieList, setMovieList] = useState([]);
 
+    const [movieData, setMovieData] = useState(null)
+
+    const handleFormSubmit = (formData) => {
+        const editedMovie = [...movieList];
+        editedMovie.push(formData);
+        setMovieList(editedMovie)
+        setToggleView(false)
+    }
     const handleToggleViewComponent = () => {
         setToggleView(!toggleView)
+    }
+
+    const handleMovieEdit = (movie) => {
+        console.log("handleMovieEdit", movie);
+        setMovieData(movie)
     }
 
   return (
@@ -52,7 +34,12 @@ function App() {
                   toggleView={toggleView}
           />
           <main style={{marginTop: "55px"}}>
-              {toggleView ? <AddForm /> : <Home movies={movieList}/>}
+              {toggleView ? <AddForm
+                      handleSubmit={handleFormSubmit}
+                      movieData={movieData}
+                  /> :
+                  <Home movies={movieList}
+                        handleMovieEdit={handleMovieEdit}/>}
           </main>
       </div>
 

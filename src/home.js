@@ -1,35 +1,75 @@
-import React from "react";
+import React, {useState} from "react";
 import './home.css';
 import {Card, Button} from "react-bootstrap";
 
 const Home = (props) => {
-    const {movies} = props;
+    const {movies, handleMovieEdit} = props;
+    const [languages, setLanguages] = useState([
+        {
+            lang: "Malayalam",
+            checked: false
+        },
+        {
+            lang: "English",
+            checked: false
+        },
+        {
+            lang: "Tamil",
+            checked: false
+        },
+        {
+            lang: "Hindi",
+            checked: false
+        }
+    ])
+
+    const handleEditMovie = (movie) => {
+        console.log("movie ro edit", movie);
+        const editLanguage = [...languages];
+        editLanguage.map(lang => {
+
+            // editLanguage[movie.languages.findIndex(mlang =>  { return mlang === lang.lang})].checked = true;
+            movie.languages.map(mlang => {
+                if(lang.lang === mlang) {
+                    lang.checked = true;
+                }
+            })
+        });
+        movie.languages = editLanguage;
+        handleMovieEdit(movie)
+
+    }
+
+
 
     return (
         <div className="container" style={{display: "flex"}}>
             {
-                movies.map(movie => {
-                    return (
-                        <Card style={{ width: '18rem' }} key={movie.id}>
-                            <Card.Img variant="top" src={"images/" +movie.id + ".jpeg"} style={{ height: 250, objectFit: "cover"}} />
-                            <Card.Body>
-                                <Card.Title>{movie.name}</Card.Title>
-                                <Card.Text>
-                                    {movie.actor}
-                                </Card.Text>
-                                <Card.Text>
-                                    {movie.rating}
-                                </Card.Text>
-                                <Card.Text>
-                                    {movie.description}
-                                </Card.Text>
-                                <Button variant="primary">Go somewhere</Button>
-                            </Card.Body>
-                        </Card>
-                    )
-                })
-            }
+                movies.length === 0 ? <h3>Please Add movie to list</h3> :
 
+                        movies.map(movie => {
+                            return (
+                                <Card style={{ width: '18rem' }} key={movie.id}>
+                                    <Card.Img variant="top" src={"images/" +movie.id + ".jpeg"} style={{ height: 250, objectFit: "cover"}} />
+                                    <Card.Body>
+                                        <Card.Title>{movie.name}</Card.Title>
+                                        <Card.Text>
+                                            {movie.actor}
+                                        </Card.Text>
+                                        <Card.Text>
+                                            {movie.rating}
+                                        </Card.Text>
+                                        <Card.Text>
+                                            {movie.description}
+                                        </Card.Text>
+
+                                        <Button variant="primary" onClick={() => handleEditMovie(movie)}>Edit</Button>
+                                        <Button variant="primary">Delete</Button>
+                                    </Card.Body>
+                                </Card>
+                            )
+                        })
+            }
         </div>
 
     )

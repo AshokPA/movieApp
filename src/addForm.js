@@ -1,7 +1,8 @@
 import {Form, Button} from "react-bootstrap";
 import {useState} from "react";
 
-const AddForm = () => {
+const AddForm = (props) => {
+    const {handleSubmit, movieData} = props;
     const [formData, setFormData] = useState({
         id: Date.now(),
         name: "",
@@ -55,7 +56,17 @@ const AddForm = () => {
     const handleFormSubmit = (event) => {
         console.log(event);
         event.preventDefault();
-        console.log("formData", formData)
+        console.log("formData", formData);
+        const dataToSubmit = {...formData}
+        const languages = [];
+        dataToSubmit.languages.map(lang => {
+            if(lang.checked) {
+                languages.push(lang.lang)
+            }
+        });
+        dataToSubmit.languages = languages;
+        console.log("dataToSubmit", dataToSubmit);
+        handleSubmit(dataToSubmit)
     }
 
     return (
