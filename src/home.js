@@ -3,7 +3,7 @@ import './home.css';
 import {Card, Button} from "react-bootstrap";
 
 const Home = (props) => {
-    const {movies, handleMovieEdit} = props;
+    const {movies, handleMovieEdit, handleDelete} = props;
     const [languages, setLanguages] = useState([
         {
             lang: "Malayalam",
@@ -40,6 +40,10 @@ const Home = (props) => {
 
     }
 
+    const handleDeleteMovie = (movie) => {
+        handleDelete(movie.id)
+    }
+
 
 
     return (
@@ -64,7 +68,7 @@ const Home = (props) => {
                                         </Card.Text>
 
                                         <Button variant="primary" onClick={() => handleEditMovie(movie)}>Edit</Button>
-                                        <Button variant="primary">Delete</Button>
+                                        <Button variant="primary" onClick={() => handleDeleteMovie(movie)}>Delete</Button>
                                     </Card.Body>
                                 </Card>
                             )

@@ -1,8 +1,8 @@
 import {Form, Button} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const AddForm = (props) => {
-    const {handleSubmit, movieData} = props;
+    const {handleSubmit, movieData, handleEdit} = props;
     const [formData, setFormData] = useState({
         id: Date.now(),
         name: "",
@@ -31,6 +31,12 @@ const AddForm = (props) => {
         certificate: false,
     })
 
+    useEffect(() => {
+       if(movieData) {
+           setFormData(movieData);
+       }
+    }, [movieData])
+
     const handleFormDataChange = (value, type) => {
         const edit = {...formData}
         edit[type] = value;
@@ -56,17 +62,32 @@ const AddForm = (props) => {
     const handleFormSubmit = (event) => {
         console.log(event);
         event.preventDefault();
-        console.log("formData", formData);
-        const dataToSubmit = {...formData}
-        const languages = [];
-        dataToSubmit.languages.map(lang => {
-            if(lang.checked) {
-                languages.push(lang.lang)
-            }
-        });
-        dataToSubmit.languages = languages;
-        console.log("dataToSubmit", dataToSubmit);
-        handleSubmit(dataToSubmit)
+        if(movieData) {
+            console.log("This is editing");
+            const dataToEdit = {...formData}
+            const languages = [];
+            dataToEdit.languages.map(lang => {
+                if(lang.checked) {
+                    languages.push(lang.lang)
+                }
+            });
+            dataToEdit.languages = languages;
+            handleEdit(dataToEdit);
+        } else {
+            console.log("This is Adding");
+            console.log("formData", formData);
+            const dataToSubmit = {...formData}
+            const languages = [];
+            dataToSubmit.languages.map(lang => {
+                if(lang.checked) {
+                    languages.push(lang.lang)
+                }
+            });
+            dataToSubmit.languages = languages;
+            console.log("dataToSubmit", dataToSubmit);
+            handleSubmit(dataToSubmit)
+        }
+
     }
 
     return (
@@ -151,9 +172,8 @@ const AddForm = (props) => {
                         onChange={(event) => handleRadio("b")}
                     />
                 </Form.Group>
-
                 <Button variant="primary" type="submit">
-                    Submit
+                    {movieData ? 'Edit' : 'Submit'}
                 </Button>
             </Form>
         </div>

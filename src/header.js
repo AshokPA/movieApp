@@ -1,7 +1,11 @@
 const Header = (props) => {
-    const {title, handleToggleView, toggleView} = props;
+    const {title, handleToggleView, toggleView, handleSearch} = props;
     const toggleComponentView = () => {
         handleToggleView();
+    }
+    const handleMovieSearch = (value) => {
+        console.log("searched text", value);
+        handleSearch(value);
     }
     return(
         <header>
@@ -32,11 +36,14 @@ const Header = (props) => {
                     {/*        </li>*/}
 
                     {/*    </ul>*/}
-                    {/*    <form className="d-flex">*/}
-                    {/*        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />*/}
-                    {/*        <button className="btn btn-outline-success" type="submit">Search</button>*/}
-                    {/*    </form>*/}
+
                     {/*</div>*/}
+                        <form className="d-flex">
+                            <input className="form-control me-2" type="search"
+                                   placeholder="Search" aria-label="Search"
+                                   onChange={(event) => handleMovieSearch(event.target.value)}
+                            />
+                        </form>
                     <button className="btn btn-outline-success"
                             type="button"
                             onClick={toggleComponentView}
