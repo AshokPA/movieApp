@@ -1,5 +1,6 @@
 import {Form, Button} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import Formsy from 'formsy-react';
 
 const AddForm = (props) => {
     const {handleSubmit, movieData, handleEdit} = props;
@@ -92,11 +93,20 @@ const AddForm = (props) => {
 
     return (
         <div className="container">
-            <Form onSubmit={handleFormSubmit}>
+            <Formsy onValidSubmit={handleFormSubmit}
+                    // onValid={this.enableButton}
+                    // onInvalid={this.disableButton}
+            >
+            {/*<Form onSubmit={handleFormSubmit}>*/}
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Movie Name</Form.Label>
                     <Form.Control type="text"
                                   placeholder="Enter Movie Name"
+                                  validations={{required : true, minLength: 4}}
+                                  validationErrors={{
+                                      required: 'Name is required',
+                                      minLength: 'Name should me minimum 4 characters',
+                                  }}
                                   value={formData.name}
                                   onChange={(event) => handleFormDataChange(event.target.value, "name")}
                     />
@@ -175,7 +185,8 @@ const AddForm = (props) => {
                 <Button variant="primary" type="submit">
                     {movieData ? 'Edit' : 'Submit'}
                 </Button>
-            </Form>
+            {/*</Form>*/}
+            </Formsy>
         </div>
     )
 }

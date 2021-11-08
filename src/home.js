@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './home.css';
 import {Card, Button} from "react-bootstrap";
+import axios from "axios";
 
 const Home = (props) => {
     const {movies, handleMovieEdit, handleDelete} = props;
@@ -22,6 +23,57 @@ const Home = (props) => {
             checked: false
         }
     ])
+
+    useEffect(() => {
+
+        // const response = fetch('https://jsonplaceholder.typicode.com/todos/1');
+        // console.log('')
+
+        // fetch('https://jsonplaceholder.typicode.com/todos/1')
+        //     .then(response => response.json())
+        //     .then(json => console.log(json))
+        //     .catch(error => {
+        //         console.log("error", error)
+        //     });
+        // console.log('abc');
+        invokeApi();
+    },[]);
+
+
+    const invokeApi = async () => {
+        // const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+        // console.log("response", response);
+
+        // axios.get('https://jsonplaceholder.typicode.com/todos/1')
+        //     .then(response => {
+        //         console.log(response);
+        //         const {data} =  response;
+        //     })
+        //     .catch(error => {
+        //         console.log('error', error);
+        //     })
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then((response) => response.json())
+            .then((json) => console.log(json));
+
+        // try {
+        //     const response = await axios.post("https://jsonplaceholder.typicode.com/posts", JSON.stringify({
+        //         title: 'foo',
+        //         body: 'bar',
+        //         userId: 1,
+        //     }));
+        //     if(response.status === 201) {
+        //         console.log(response.data);
+        //         alert("Post saved success");
+        //     } else {
+        //         console.log("error")
+        //     }  //200, 201, 202, 203, 204
+        // } catch(error) {
+        //     console.log("error", error.message);
+        // }
+
+
+    }
 
     const handleEditMovie = (movie) => {
         console.log("movie ro edit", movie);
