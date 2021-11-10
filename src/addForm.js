@@ -1,9 +1,15 @@
 import {Form, Button} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import Formsy from 'formsy-react';
+import { useDispatch } from "react-redux";
+import * as Actions from './store/actions';
+import { useNavigate } from "react-router";
 
 const AddForm = (props) => {
     const {handleSubmit, movieData, handleEdit} = props;
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         id: Date.now(),
         name: "",
@@ -86,18 +92,21 @@ const AddForm = (props) => {
             });
             dataToSubmit.languages = languages;
             console.log("dataToSubmit", dataToSubmit);
-            handleSubmit(dataToSubmit)
+        
+            dispatch(Actions.addMovie(dataToSubmit));
+            // handleSubmit(dataToSubmit)
+            navigate("/home")
         }
 
     }
 
     return (
         <div className="container">
-            <Formsy onValidSubmit={handleFormSubmit}
+            {/* <Formsy onValidSubmit={handleFormSubmit}
                     // onValid={this.enableButton}
                     // onInvalid={this.disableButton}
-            >
-            {/*<Form onSubmit={handleFormSubmit}>*/}
+            > */}
+            <Form onSubmit={handleFormSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Movie Name</Form.Label>
                     <Form.Control type="text"
@@ -185,8 +194,8 @@ const AddForm = (props) => {
                 <Button variant="primary" type="submit">
                     {movieData ? 'Edit' : 'Submit'}
                 </Button>
-            {/*</Form>*/}
-            </Formsy>
+            </Form>
+            {/* </Formsy> */}
         </div>
     )
 }

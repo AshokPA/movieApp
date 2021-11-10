@@ -3,7 +3,22 @@ import Home from "./home";
 import Header from "./header";
 import AddForm from "./addForm";
 import './App.css';
+import thunk from "redux-thunk";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+  } from "react-router-dom";
+  import { Provider } from 'react-redux'
+  import {applyMiddleware, combineReducers, createStore} from "redux"
+import MovieReducer from "./store/reducers/movie.reducer";
 
+
+  const rootReducer = combineReducers({
+        movieApp: MovieReducer,
+    });
+    const store = createStore(rootReducer, applyMiddleware(thunk));
 
 function App() {
     const [title, setTitle] = useState("Movie App");
@@ -11,8 +26,8 @@ function App() {
     const [movieList, setMovieList] = useState([]);
     const [searchedList, setSearchedList] = useState([])
 
-    const [movieData, setMovieData] = useState(null)
-
+    const [movieData, setMovieData] = useState(null);
+    
     const handleFormSubmit = (formData) => {
         const editedMovie = [...movieList];
         editedMovie.push(formData);
@@ -56,6 +71,12 @@ function App() {
     }
     const handleToggleViewComponent = () => {
         setToggleView(!toggleView)
+        // if(toggleView) {
+        //     navigate('home');
+        // } else {
+        //     navigate('add');
+        // }
+       
     }
 
     const handleMovieEdit = (movie) => {
@@ -76,13 +97,28 @@ function App() {
 
   return (
       <div>
+          <Provider store={store}>
+          <Router>
           <Header title={title}
                   handleToggleView={handleToggleViewComponent}
                   toggleView={toggleView}
                   handleSearch={handleMovieSearch}
           />
           <main style={{marginTop: "55px"}}>
-              {toggleView ? <AddForm
+                
+                    <Routes>
+                        <Route path="/home" element={<Home/>}>
+                           
+                        </Route>
+                        <Route path="/add" element={<AddForm />}>
+                            
+                        </Route>
+                        <Route path="/" to="/home">
+                            
+                        </Route>
+                    </Routes>
+               
+              {/* {toggleView ? <AddForm
                       handleSubmit={handleFormSubmit}
                       movieData={movieData}
                       handleEdit={handleFormEdit}
@@ -90,8 +126,10 @@ function App() {
                   <Home movies={searchedList}
                         handleMovieEdit={handleMovieEdit}
                         handleDelete={handleMovieDelete}
-                  />}
+                  />} */}
           </main>
+          </Router>
+          </Provider>
       </div>
 
   );

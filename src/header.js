@@ -1,7 +1,11 @@
+import { useNavigate } from "react-router";
+
 const Header = (props) => {
     const {title, handleToggleView, toggleView, handleSearch} = props;
+    const navigate = useNavigate();
     const toggleComponentView = () => {
         handleToggleView();
+        navigate("/add");
     }
     const handleMovieSearch = (value) => {
         console.log("searched text", value);

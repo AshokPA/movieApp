@@ -2,9 +2,12 @@ import React, {useEffect, useState} from "react";
 import './home.css';
 import {Card, Button} from "react-bootstrap";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Home = (props) => {
-    const {movies, handleMovieEdit, handleDelete} = props;
+    const {movies} = useSelector((state) => state.movieApp);
+    console.log("redux, state", movies);
+    const {handleMovieEdit, handleDelete} = props;
     const [languages, setLanguages] = useState([
         {
             lang: "Malayalam",
@@ -101,9 +104,9 @@ const Home = (props) => {
     return (
         <div className="container" style={{display: "flex"}}>
             {
-                movies.length === 0 ? <h3>Please Add movie to list</h3> :
+                movies && movies.length === 0 ? <h3>Please Add movie to list</h3> :
 
-                        movies.map(movie => {
+                        movies && movies.map(movie => {
                             return (
                                 <Card style={{ width: '18rem' }} key={movie.id}>
                                     <Card.Img variant="top" src={"images/" +movie.id + ".jpeg"} style={{ height: 250, objectFit: "cover"}} />
